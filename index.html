@@ -1,0 +1,1486 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>TJIT Club Registration</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background:
+        linear-gradient(135deg, #eff6ff 0%, #f8fafc 50%, #eef2ff 100%);
+      color: #1e293b;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 20px auto;
+    }
+
+    /* HEADER */
+
+    .header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      text-align: center;
+      padding: 32px 20px;
+      border-radius: 22px 22px 0 0;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .header h2 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.92;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 15px;
+      background: rgba(255, 255, 255, 0.17);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 30px;
+      font-size: 13px;
+    }
+
+    /* FORM CARD */
+
+    .form-card {
+      background: white;
+      padding: 30px;
+      border-radius: 0 0 22px 22px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .required {
+      color: #dc2626;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 11px;
+      background: white;
+      color: #0f172a;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    input[readonly] {
+      background: #f1f5f9;
+      cursor: not-allowed;
+    }
+
+    select:disabled {
+      background: #f8fafc;
+      color: #94a3b8;
+    }
+
+    .help-text {
+      margin-top: 7px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* CLUB AVAILABILITY */
+
+    .club-availability {
+      margin-top: 9px;
+      padding: 11px 13px;
+      border-radius: 9px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      font-size: 13px;
+    }
+
+    .available {
+      color: #15803d;
+      font-weight: 700;
+    }
+
+    .full {
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    /* BUTTON */
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 7px 18px rgba(37, 99, 235, 0.25);
+    }
+
+    .submit-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* MESSAGE */
+
+    .message {
+      display: none;
+      margin-bottom: 20px;
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .message.success {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .message.error {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .message.info {
+      display: block;
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+    }
+
+    /* LOADING */
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding-top: 14px;
+      color: #475569;
+      font-size: 13px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border: 2px solid #cbd5e1;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 7px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* FOOTER */
+
+    .footer {
+      text-align: center;
+      padding: 18px 5px 5px;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    /* SUCCESS SCREEN */
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    .success-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: #dcfce7;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+    }
+
+    .success-screen h2 {
+      color: #166534;
+      margin-bottom: 10px;
+    }
+
+    .success-screen p {
+      color: #475569;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .register-again {
+      margin-top: 20px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 9px;
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        margin: 5px auto;
+      }
+
+      .header {
+        padding: 27px 17px;
+        border-radius: 17px 17px 0 0;
+      }
+
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .header h2 {
+        font-size: 16px;
+      }
+
+      .form-card {
+        padding: 22px 16px;
+        border-radius: 0 0 17px 17px;
+      }
+
+      input,
+      select {
+        padding: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+
+  <div class="header">
+
+    <h1>T. John Group of Institutes</h1>
+
+    <h2>Club Registration</h2>
+
+    <p>1st Semester</p>
+
+    <div class="badge">
+      Select One Club
+    </div>
+
+  </div>
+
+
+  <!-- FORM -->
+
+  <div class="form-card">
+
+    <div
+      id="message"
+      class="message">
+    </div>
+
+
+    <div id="registrationArea">
+
+      <form id="registrationForm">
+
+        <!-- FULL NAME -->
+
+        <div class="form-group">
+
+          <label for="fullName">
+            Full Name
+            <span class="required">*</span>
+          </label>
+
+          <input
+            type="text"
+            id="fullName"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required
+          >
+
+        </div>
+
+
+        <!-- ROLL NUMBER -->
+
+        <div class="form-group">
+
+          <label for="rollNumber">
+            Roll Number
+          </label>
+
+          <input
+            type="text"
+            id="rollNumber"
+            placeholder="Enter your roll number"
+            autocomplete="off"
+            required
+          >
+
+          <div class="help-text">
+            Your roll number is used to prevent duplicate registration.
+          </div>
+
+        </div>
+
+
+        <!-- SEMESTER -->
+
+        <div class="form-group">
+
+          <label for="semester">
+            Semester
+          </label>
+
+          <input
+            type="text"
+            id="semester"
+            value="1st Semester"
+            readonly
+          >
+
+        </div>
+
+
+        <!-- DEPARTMENT -->
+
+        <div class="form-group">
+
+          <label for="department">
+            Department
+            <span class="required">*</span>
+          </label>
+
+          <select
+            id="department"
+            required
+          >
+
+            <option value="">
+              Select Department
+            </option>
+
+            <option value="CSE">
+              Computer Science and Engineering
+            </option>
+
+            <option value="ISE">
+              Information Science and Engineering
+            </option>
+
+            <option value="ECE">
+              Electronics and Communication Engineering
+            </option>
+
+            <option value="AIML">
+              Artificial Intelligence and Machine Learning
+            </option>
+
+            <option value="CIVIL">
+              Data Science
+            </option>
+
+            <option value="ME">
+              Computer Science(IOT & CS)
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+          <label for="email">
+            Email
+            <span class="required">*</span>
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+
+        <!-- WHATSAPP -->
+
+        <div class="form-group">
+
+          <label for="whatsapp">
+            WhatsApp Number
+            <span class="required">*</span>
+          </label>
+
+          <input
+            type="tel"
+            id="whatsapp"
+            placeholder="Enter 10-digit WhatsApp number"
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel"
+            required
+          >
+
+          <div class="help-text">
+            Enter your 10-digit WhatsApp number.
+          </div>
+
+        </div>
+
+
+        <!-- CLUB -->
+
+        <div class="form-group">
+
+          <label for="club">
+            Select Club
+            <span class="required">*</span>
+          </label>
+
+          <select
+            id="club"
+            required
+            disabled
+          >
+
+            <option value="">
+              Loading clubs...
+            </option>
+
+          </select>
+
+
+          <div
+            id="clubAvailability"
+            class="club-availability"
+          >
+            Loading club availability...
+          </div>
+
+        </div>
+
+
+        <!-- SUBMIT -->
+
+        <button
+          type="submit"
+          id="submitBtn"
+          class="submit-btn"
+          disabled
+        >
+          Submit Registration
+        </button>
+
+
+        <div
+          id="loading"
+          class="loading"
+        >
+
+          <span class="spinner"></span>
+
+          Processing registration...
+
+        </div>
+
+      </form>
+
+    </div>
+
+
+    <!-- SUCCESS SCREEN -->
+
+    <div
+      id="successScreen"
+      class="success-screen"
+    >
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <h2>
+        Registration Successful!
+      </h2>
+
+      <p id="successText">
+        Your club registration has been completed successfully.
+      </p>
+
+      <button
+        class="register-again"
+        onclick="registerAgain()"
+      >
+        Register Another Student
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- FOOTER -->
+
+  <div class="footer">
+    © 2026 T. John Group of Institutes
+  </div>
+
+</div>
+
+
+<script>
+
+/*
+=========================================================
+GOOGLE APPS SCRIPT API
+=========================================================
+*/
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbwsLrU0uIFHoiIctt6-GuQ8PwEX7JSoJC0icjltr0TgS54rTCT0kdy0nAeJ5bNJDDdMvQ/exec";
+
+
+/*
+=========================================================
+CLUBS
+=========================================================
+*/
+
+const CLUBS = [
+
+  "Science Club",
+
+  "Literature Club",
+
+  "Innovation Club",
+
+  "Media Club",
+
+  "NSS Cell",
+
+  "Outdoor Games Club 1",
+
+  "Outdoor Games Club 2",
+
+  "Indoor Games Club 1",
+
+  "Indoor Games Club 2",
+
+  "Research Club",
+
+  "Handicraft Club",
+
+  "Wellness Club",
+
+  "Robotics Club",
+
+  "Dance & Music Club",
+
+  "Fine Arts Club",
+
+  "Coding Club 1",
+
+  "Coding Club 2",
+
+  "Cyber Club",
+
+  "Finance & Investment Club",
+
+  "Fashion Club",
+
+  "Microsoft Club 1",
+
+  "Microsoft Club 2",
+
+  "IT & Networks Club 1",
+
+  "IT & Networks Club 2"
+
+];
+
+
+/*
+=========================================================
+ELEMENTS
+=========================================================
+*/
+
+const form =
+  document.getElementById(
+    "registrationForm"
+  );
+
+const clubSelect =
+  document.getElementById(
+    "club"
+  );
+
+const clubAvailability =
+  document.getElementById(
+    "clubAvailability"
+  );
+
+const submitBtn =
+  document.getElementById(
+    "submitBtn"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+const loading =
+  document.getElementById(
+    "loading"
+  );
+
+const registrationArea =
+  document.getElementById(
+    "registrationArea"
+  );
+
+const successScreen =
+  document.getElementById(
+    "successScreen"
+  );
+
+const successText =
+  document.getElementById(
+    "successText"
+  );
+
+
+/*
+=========================================================
+CLUB DATA
+=========================================================
+*/
+
+let clubData = {};
+
+
+/*
+=========================================================
+SHOW MESSAGE
+=========================================================
+*/
+
+function showMessage(
+  text,
+  type
+) {
+
+  message.textContent = text;
+
+  message.className =
+    "message " + type;
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/*
+=========================================================
+CLEAR MESSAGE
+=========================================================
+*/
+
+function clearMessage() {
+
+  message.textContent = "";
+
+  message.className =
+    "message";
+
+}
+
+
+/*
+=========================================================
+LOAD CLUB AVAILABILITY
+=========================================================
+*/
+
+async function loadClubAvailability() {
+
+  clubSelect.disabled = true;
+
+  submitBtn.disabled = true;
+
+  clubSelect.innerHTML =
+    '<option value="">Loading clubs...</option>';
+
+  clubAvailability.textContent =
+    "Checking available seats...";
+
+
+  try {
+
+    const response =
+      await fetch(
+        API_URL +
+        "?action=clubs&t=" +
+        Date.now()
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Server returned an error."
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !data.success ||
+      !data.clubs
+    ) {
+
+      throw new Error(
+        data.message ||
+        "Unable to load clubs."
+      );
+
+    }
+
+
+    clubData =
+      data.clubs;
+
+
+    populateClubs();
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Club loading error:",
+      error
+    );
+
+
+    clubSelect.innerHTML =
+      '<option value="">Unable to load clubs</option>';
+
+    clubAvailability.innerHTML =
+      '<span class="full">Unable to connect to the registration server.</span>';
+
+    showMessage(
+      "Unable to load club availability. Please refresh the page.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/*
+=========================================================
+POPULATE CLUB DROPDOWN
+=========================================================
+*/
+
+function populateClubs() {
+
+  clubSelect.innerHTML =
+    '<option value="">Select a Club</option>';
+
+
+  CLUBS.forEach(
+    function(club) {
+
+      const info =
+        clubData[club];
+
+
+      if (!info) {
+
+        return;
+
+      }
+
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        club;
+
+
+      if (
+        info.status === "FULL" ||
+        info.remaining <= 0
+      ) {
+
+        option.textContent =
+          club +
+          " — FULL";
+
+        option.disabled = true;
+
+      }
+
+      else {
+
+        option.textContent =
+          club +
+          " — " +
+          info.remaining +
+          " seat" +
+          (
+            info.remaining === 1
+              ? ""
+              : "s"
+          ) +
+          " available";
+
+      }
+
+
+      clubSelect.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  clubSelect.disabled = false;
+
+  updateClubMessage();
+
+}
+
+
+/*
+=========================================================
+CLUB SELECTION
+=========================================================
+*/
+
+clubSelect.addEventListener(
+  "change",
+  function() {
+
+    updateClubMessage();
+
+  }
+);
+
+
+/*
+=========================================================
+UPDATE CLUB INFORMATION
+=========================================================
+*/
+
+function updateClubMessage() {
+
+  const selectedClub =
+    clubSelect.value;
+
+
+  if (!selectedClub) {
+
+    clubAvailability.textContent =
+      "Select a club to see available seats.";
+
+    submitBtn.disabled = true;
+
+    return;
+
+  }
+
+
+  const info =
+    clubData[selectedClub];
+
+
+  if (!info) {
+
+    clubAvailability.textContent =
+      "Club information unavailable.";
+
+    submitBtn.disabled = true;
+
+    return;
+
+  }
+
+
+  if (
+    info.status === "FULL" ||
+    info.remaining <= 0
+  ) {
+
+    clubAvailability.innerHTML =
+      '<span class="full">FULL — No seats remaining.</span>';
+
+    submitBtn.disabled = true;
+
+    return;
+
+  }
+
+
+  clubAvailability.innerHTML =
+    '<span class="available">' +
+    info.remaining +
+    " seat" +
+    (
+      info.remaining === 1
+        ? ""
+        : "s"
+    ) +
+    " remaining</span>" +
+    " out of " +
+    info.capacity;
+
+
+  submitBtn.disabled = false;
+
+}
+
+
+/*
+=========================================================
+WHATSAPP INPUT
+=========================================================
+*/
+
+document
+  .getElementById("whatsapp")
+  .addEventListener(
+    "input",
+    function() {
+
+      this.value =
+        this.value
+          .replace(
+            /[^0-9]/g,
+            ""
+          )
+          .slice(
+            0,
+            10
+          );
+
+    }
+  );
+
+
+/*
+=========================================================
+FORM SUBMISSION
+=========================================================
+*/
+
+form.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+
+    clearMessage();
+
+
+    const fullName =
+      document
+        .getElementById(
+          "fullName"
+        )
+        .value
+        .trim();
+
+
+    const rollNumber =
+      document
+        .getElementById(
+          "rollNumber"
+        )
+        .value
+        .trim();
+
+
+    const semester =
+      document
+        .getElementById(
+          "semester"
+        )
+        .value;
+
+
+    const department =
+      document
+        .getElementById(
+          "department"
+        )
+        .value;
+
+
+    const email =
+      document
+        .getElementById(
+          "email"
+        )
+        .value
+        .trim();
+
+
+    const whatsapp =
+      document
+        .getElementById(
+          "whatsapp"
+        )
+        .value
+        .trim();
+
+
+    const club =
+      clubSelect.value;
+
+
+    /*
+    ------------------------------------------
+    VALIDATION
+    ------------------------------------------
+    */
+
+    if (
+      !fullName ||
+      !rollNumber ||
+      !department ||
+      !email ||
+      !whatsapp ||
+      !club
+    ) {
+
+      showMessage(
+        "Please fill in all required fields.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      !/^[0-9]{10}$/.test(
+        whatsapp
+      )
+    ) {
+
+      showMessage(
+        "Please enter a valid 10-digit WhatsApp number.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email)
+    ) {
+
+      showMessage(
+        "Please enter a valid email address.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    /*
+    ------------------------------------------
+    CHECK LOCAL CAPACITY
+    ------------------------------------------
+    */
+
+    const selectedInfo =
+      clubData[club];
+
+
+    if (
+      !selectedInfo ||
+      selectedInfo.remaining <= 0 ||
+      selectedInfo.status === "FULL"
+    ) {
+
+      showMessage(
+        "Sorry, this club is already full. Please select another club.",
+        "error"
+      );
+
+      await loadClubAvailability();
+
+      return;
+
+    }
+
+
+    /*
+    ------------------------------------------
+    DISABLE FORM
+    ------------------------------------------
+    */
+
+    submitBtn.disabled = true;
+
+    clubSelect.disabled = true;
+
+    loading.style.display =
+      "block";
+
+
+    /*
+    ------------------------------------------
+    DATA TO SEND
+    ------------------------------------------
+    */
+
+    const registrationData = {
+
+      action: "register",
+
+      fullName:
+        fullName,
+
+      rollNumber:
+        rollNumber,
+
+      semester:
+        semester,
+
+      department:
+        department,
+
+      email:
+        email,
+
+      whatsapp:
+        whatsapp,
+
+      club:
+        club
+
+    };
+
+
+    try {
+
+      /*
+      Apps Script POST
+      */
+
+      const response =
+        await fetch(
+          API_URL,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+            body:
+              JSON.stringify(
+                registrationData
+              )
+
+          }
+        );
+
+
+      const result =
+        await response.json();
+
+
+      /*
+      ------------------------------------------
+      SUCCESS
+      ------------------------------------------
+      */
+
+      if (
+        result.success
+      ) {
+
+        registrationArea.style.display =
+          "none";
+
+        successScreen.style.display =
+          "block";
+
+
+        successText.innerHTML =
+          "Your registration for <strong>" +
+          escapeHTML(
+            result.club
+          ) +
+          "</strong> has been completed successfully.<br><br>" +
+          "Your position in the club is <strong>" +
+          result.position +
+          "</strong>.";
+
+      }
+
+
+      /*
+      ------------------------------------------
+      ERROR
+      ------------------------------------------
+      */
+
+      else {
+
+        showMessage(
+          result.message ||
+          "Registration failed. Please try again.",
+          "error"
+        );
+
+
+        /*
+        Refresh availability because
+        another student may have registered.
+        */
+
+        await loadClubAvailability();
+
+      }
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Registration error:",
+        error
+      );
+
+
+      showMessage(
+        "Unable to connect to the registration server. Please try again.",
+        "error"
+      );
+
+
+      await loadClubAvailability();
+
+    }
+
+
+    submitBtn.disabled = false;
+
+    loading.style.display =
+      "none";
+
+  }
+);
+
+
+/*
+=========================================================
+REGISTER AGAIN
+=========================================================
+*/
+
+function registerAgain() {
+
+  successScreen.style.display =
+    "none";
+
+  registrationArea.style.display =
+    "block";
+
+
+  form.reset();
+
+
+  document
+    .getElementById(
+      "semester"
+    )
+    .value =
+    "1st Semester";
+
+
+  clubSelect.innerHTML =
+    '<option value="">Select a Club</option>';
+
+
+  clubSelect.disabled =
+    true;
+
+
+  submitBtn.disabled =
+    true;
+
+
+  clearMessage();
+
+
+  loadClubAvailability();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/*
+=========================================================
+ESCAPE HTML
+=========================================================
+*/
+
+function escapeHTML(
+  text
+) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.textContent =
+    text;
+
+  return div.innerHTML;
+
+}
+
+
+/*
+=========================================================
+INITIAL LOAD
+=========================================================
+*/
+
+loadClubAvailability();
+
+</script>
+
+</body>
+</html>
